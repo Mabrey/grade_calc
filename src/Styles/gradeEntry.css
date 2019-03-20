@@ -1,0 +1,21 @@
+.entryName{
+    
+    margin: 10px
+}
+
+.entryGrade{
+    margin: 10px
+}
+
+.entryWeight{
+    margin: 10px
+}
+
+#gradeList{
+    margin: auto;
+    width: 40%;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 100%;
+}
+
