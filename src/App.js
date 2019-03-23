@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './Styles/App.css';
 import GradeList from './Components/GradeList';
+import GradeBreakdown from './Components/GradeBreakdown';
 
 class App extends Component {
   constructor(){
@@ -61,41 +62,47 @@ class App extends Component {
 
   async calculateSubmit(){
     await this.calculateWeight();
-    this.calculateGrade();
+    await this.calculateGrade();
+    this.createGradeList();
   }
 
   calculateGrade(){
-    //create a "zip" using map to calculate breakdown of the percent makeup of total grade.
-    let totalGradeBreakdown = this.state.entryGrades.map((grade, index) => {
-      //console.log(typeof grade);
-      return grade * this.state.entryWeights[index];
-    })
+    return new Promise((res, rej) => {
+          //create a "zip" using map to calculate breakdown of the percent makeup of total grade.
+      let totalGradeBreakdown = this.state.entryGrades.map((grade, index) => {
+        //console.log(typeof grade);
+        return grade * this.state.entryWeights[index];
+      })
 
-    //sum the grade breakdown values for total grade
-    let totalGrade = totalGradeBreakdown.reduce((gradeAccumulator, currentGradeCategory) =>{
-      return gradeAccumulator + currentGradeCategory;
-    })
+      //sum the grade breakdown values for total grade
+      let totalGrade = totalGradeBreakdown.reduce((gradeAccumulator, currentGradeCategory) =>{
+        return gradeAccumulator + currentGradeCategory;
+      })
 
-    let currentGrade = totalGrade / this.state.totalWeight;
-    if (isNaN(currentGrade)) currentGrade = 0;
+      let currentGrade = totalGrade / this.state.totalWeight;
+      if (isNaN(currentGrade)) currentGrade = 0;
+      
+      // Convert grade to percent
+      totalGrade = Math.round(totalGrade)/100;
     
-    // Convert grade to percent
-    totalGrade = Math.round(totalGrade)/100;
-  
-    let gradeNeeded = "N/A";
-    if(this.state.desiredGrade.length > 0){
-      gradeNeeded = (this.state.desiredGrade - totalGrade) / this.state.remainingWeight * 100;
-    }
+      let gradeNeeded = "N/A";
+      if(this.state.desiredGrade.length > 0){
+        gradeNeeded = (this.state.desiredGrade - totalGrade) / this.state.remainingWeight * 100;
+      }
 
-    console.log(gradeNeeded);
-    console.log(this.state.desiredGrade.length);
-    this.setState({
-      ...this.state,
-      totalGrade: totalGrade, 
-      totalGradeBreakdown: totalGradeBreakdown,
-      currentGrade: currentGrade,
-      gradeNeeded: gradeNeeded,
+      console.log(gradeNeeded);
+      console.log(this.state.desiredGrade.length);
+      this.setState({
+        ...this.state,
+        totalGrade: totalGrade, 
+        totalGradeBreakdown: totalGradeBreakdown,
+        currentGrade: currentGrade,
+        gradeNeeded: gradeNeeded,
+      })
+
+      res();
     })
+
   }
 
   calculateWeight(){
@@ -109,6 +116,29 @@ class App extends Component {
       res(); 
     })
   }
+
+
+  
+  // -------------- Functions for managing components -------------- //
+
+  createGradeList(){
+    let breakdownList = [];
+
+    this.state.entryNames.forEach((name, i) => {
+      let breakdownComponent =
+        <GradeBreakdown
+          id={`gradeBreakdown${i}`}
+          name={name}
+          grade={this.state.entryGrades[i]}
+          weight={this.state.entryWeights[i]}
+          gradeContribution={Math.round(this.state.totalGradeBreakdown[i])/100}/>;
+
+      breakdownList.push(breakdownComponent);
+    })
+
+    this.setState({...this.state, breakdownList: breakdownList});
+  }
+
 
  
 
@@ -153,6 +183,7 @@ class App extends Component {
     });
   }
 
+
   // ---------------------- Render ---------------------- //
 
   render() {
@@ -192,11 +223,16 @@ class App extends Component {
         </div>
         
         <div id='info'>
-          <p class='info'>Current Grade: {this.state.currentGrade}</p>
-          <p class='info'>Total Grade: {this.state.totalGrade}</p>
-          <p class='info'>Remaining Weight: {this.state.remainingWeight}</p>
-          <p class='info'>Grade Needed for Desired: {this.state.gradeNeeded}</p>
+          <p className='info'>Current Grade: {this.state.currentGrade}</p>
+          <p className='info'>Total Grade: {this.state.totalGrade}</p>
+          <p className='info'>Remaining Weight: {this.state.remainingWeight}</p>
+          <p className='info'>Grade Needed for Desired: {this.state.gradeNeeded}</p>
         </div>
+
+        <div id="breakdownContainer">
+          {this.state.breakdownList}
+        </div>
+        
       </div>
     );
   }
