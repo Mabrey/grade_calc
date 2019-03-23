@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
+import './Styles/App.css';
 import GradeList from './Components/GradeList';
 
 class App extends Component {
@@ -13,7 +13,7 @@ class App extends Component {
       totalGrade: 0,
       totalGradeBreakdown: [],
       currentGrade: 0,
-      desiredGrade: 0,
+      desiredGrade: "",
       totalWeight: 0,
       gradeNeeded: 0,
       remainingWeight: 100,
@@ -42,6 +42,7 @@ class App extends Component {
       entryGrades: entryGrades,
       entryWeights: entryWeights,
       totalGradeBreakdown: totalGradeBreakdown,
+      desiredGrade: "",
     });
   }
 
@@ -52,7 +53,7 @@ class App extends Component {
       document.getElementById(`entryGrade${i}`).value = 0;
       document.getElementById(`entryWeight${i}`).value = 0;
     }  
-    document.getElementById('desiredGrade').value = '';
+    document.getElementById('desiredGrade').value = "";
   }
 
   // -------------- Functions for data calculations -------------- //
@@ -80,9 +81,14 @@ class App extends Component {
     
     // Convert grade to percent
     totalGrade = Math.round(totalGrade)/100;
+  
+    let gradeNeeded = "N/A";
+    if(this.state.desiredGrade.length > 0){
+      gradeNeeded = (this.state.desiredGrade - totalGrade) / this.state.remainingWeight * 100;
+    }
 
-    let gradeNeeded = (this.state.desiredGrade - totalGrade) / this.state.remainingWeight * 100;
-    
+    console.log(gradeNeeded);
+    console.log(this.state.desiredGrade.length);
     this.setState({
       ...this.state,
       totalGrade: totalGrade, 
@@ -159,23 +165,37 @@ class App extends Component {
 
     return (
       <div className="App">
-        <header>
-          <h1>Final Grade Calculator</h1>
+        <header id='title'>
+          <h1 >Final Grade Calculator</h1>
         </header>
-        <GradeList 
-          entryInfo={entryInfo} 
-          handleNameChange = {this.handleNameChange}
-          handleGradeChange = {this.handleGradeChange}
-          handleWeightChange = {this.handleWeightChange}
-          handleDesiredGradeChange = {this.handleDesiredGradeChange}
-        />
-        <button onClick={this.calculateSubmit.bind(this)}>Calculate</button>
-        <button onClick={this.reset.bind(this)}>Reset</button>
-        <div>
-          <p>Current Grade: {this.state.currentGrade}</p>
-          <p>Total Grade: {this.state.totalGrade}</p>
-          <p>Remaining Weight: {this.state.remainingWeight}</p>
-          <p>Grade Needed for Desired: {this.state.gradeNeeded}</p>
+        <div id='gradeListContainer'>
+          <GradeList
+            entryInfo={entryInfo} 
+            handleNameChange = {this.handleNameChange}
+            handleGradeChange = {this.handleGradeChange}
+            handleWeightChange = {this.handleWeightChange}
+            handleDesiredGradeChange = {this.handleDesiredGradeChange}
+          /> 
+        </div>
+
+        <div id='calcButtons' >
+          <button 
+            id='calculateButton' 
+            onClick={this.calculateSubmit.bind(this)}>
+            Calculate
+          </button>
+          <button 
+            id='resetButton'
+            onClick={this.reset.bind(this)}>
+            Reset
+          </button>
+        </div>
+        
+        <div id='info'>
+          <p class='info'>Current Grade: {this.state.currentGrade}</p>
+          <p class='info'>Total Grade: {this.state.totalGrade}</p>
+          <p class='info'>Remaining Weight: {this.state.remainingWeight}</p>
+          <p class='info'>Grade Needed for Desired: {this.state.gradeNeeded}</p>
         </div>
       </div>
     );

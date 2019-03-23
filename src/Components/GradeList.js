@@ -67,8 +67,16 @@ class GradeList extends Component {
 
         return (
             <div >
-                <div id = 'gradeList'>{this.state.entryList}</div>
-                <form>
+                
+                <div id = 'gradeList'>
+                    <div id = 'gradeListTitle'>
+                        <span id='gradeListName'>Name</span>
+                        <span id='gradeListGrade'>Grade</span>
+                        <span id='gradeListWeight'>Weight</span>
+                    </div>
+                    {this.state.entryList}</div>
+                <form id='desiredGradeForm'>
+                    <span id='desiredGradeTitle'>Desired Grade: </span>
                     <input 
                         id={`desiredGrade`}
                         className='desiredGrade' 

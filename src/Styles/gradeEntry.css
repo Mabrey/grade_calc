@@ -13,9 +13,43 @@
 
 #gradeList{
     margin: auto;
-    width: 40%;
+    
     display: grid;
     grid-template-rows: auto;
     grid-template-columns: 100%;
 }
+
+#gradeListName{
+    margin: 60px;    
+}
+#gradeListGrade{
+    margin: 60px;
+}
+#gradeListWeight{
+    margin: 60px;    
+} 
+
+#desiredGradeForm{
+    margin: 20px 0px 15px 0px;
+}
+#desiredGradeTitle{
+    margin-right: 20px;
+}
+
+/*
+#gradeListTitle{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas: "name grade weight"
+}
+
+ #gradeListName{
+    grid-area: name;
+}
+#gradeListGrade{
+    grid-area: grade;
+}
+#gradeListWeight{
+    grid-area: weight;
+} */
 

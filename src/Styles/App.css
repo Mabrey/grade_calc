@@ -1,0 +1,41 @@
+.App {
+  display: grid;
+  grid-template-rows: auto auto auto;
+  grid-template-columns: 2fr 3fr 2fr;
+  grid-template-areas: 
+    "title title title"
+    "left gradeList info"
+    "left calcButtons info";
+  text-align: center;
+}
+
+#title {
+  grid-area: title;
+}
+
+#gradeListContainer{
+  grid-area: gradeList;
+}
+
+#info{
+  text-align: left;
+  grid-area: info;
+ 
+}
+
+#calcButtons{
+  grid-area: calcButtons;
+}
+
+#calculateButton{
+  margin: 10px;
+}
+#resetButton{
+  margin: 10px;
+}
+
+/* .info{
+  justify-self: left;
+  margin-left: 10px;
+} */
+
