@@ -1,0 +1,27 @@
+#breakDownRow{
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr 2fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: "name grade x bdweight equals contribution";
+    justify-items: center;
+}
+
+#breakDownName{
+    grid-area: name;
+    justify-self: center;
+}
+
+#breakDownGrade{
+    grid-area: grade;
+    justify-self: center;
+}
+
+#breakDownWeight{
+    grid-area: bdweight;
+    justify-self: center;
+}
+
+#breakDownGradeContribution{
+    grid-area: contribution;
+}
+

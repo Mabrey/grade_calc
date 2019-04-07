@@ -81,6 +81,8 @@ class App extends Component {
 
       let currentGrade = totalGrade / this.state.totalWeight;
       if (isNaN(currentGrade)) currentGrade = 0;
+
+      currentGrade = Math.round(currentGrade * 100)/100;
       
       // Convert grade to percent
       totalGrade = Math.round(totalGrade)/100;
@@ -88,6 +90,7 @@ class App extends Component {
       let gradeNeeded = "N/A";
       if(this.state.desiredGrade.length > 0){
         gradeNeeded = (this.state.desiredGrade - totalGrade) / this.state.remainingWeight * 100;
+        gradeNeeded = Math.round(gradeNeeded * 100)/100;
       }
 
       console.log(gradeNeeded);
@@ -123,17 +126,19 @@ class App extends Component {
 
   createGradeList(){
     let breakdownList = [];
-
+  
     this.state.entryNames.forEach((name, i) => {
-      let breakdownComponent =
-        <GradeBreakdown
-          id={`gradeBreakdown${i}`}
-          name={name}
-          grade={this.state.entryGrades[i]}
-          weight={this.state.entryWeights[i]}
-          gradeContribution={Math.round(this.state.totalGradeBreakdown[i])/100}/>;
+      if(this.state.entryWeights[i] !== 0){
+        let breakdownComponent =
+          <GradeBreakdown
+            id={`gradeBreakdown${i}`}
+            name={name}
+            grade={this.state.entryGrades[i]}
+            weight={this.state.entryWeights[i]}
+            gradeContribution={Math.round(this.state.totalGradeBreakdown[i])/100}/>;
 
-      breakdownList.push(breakdownComponent);
+        breakdownList.push(breakdownComponent);
+      }
     })
 
     this.setState({...this.state, breakdownList: breakdownList});
@@ -227,11 +232,13 @@ class App extends Component {
           <p className='info'>Total Grade: {this.state.totalGrade}</p>
           <p className='info'>Remaining Weight: {this.state.remainingWeight}</p>
           <p className='info'>Grade Needed for Desired: {this.state.gradeNeeded}</p>
+          <p>Entry: Grade(%) * Weight(%) = Total Grade Portion(%)</p>
+          <div id="breakdownContainer">
+            {this.state.breakdownList}
+          </div>
         </div>
 
-        <div id="breakdownContainer">
-          {this.state.breakdownList}
-        </div>
+        
         
       </div>
     );

@@ -34,6 +34,10 @@
   margin: 10px;
 }
 
+/* #breakdownContainer{
+  grid-area: info;
+} */
+
 /* .info{
   justify-self: left;
   margin-left: 10px;

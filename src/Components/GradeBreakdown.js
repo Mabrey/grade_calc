@@ -1,4 +1,6 @@
 import React from 'react';
+import '../Styles/gradeBreakdown.css';
+
 
 
 //holds the list of entries provided by the user.
@@ -39,11 +41,13 @@ function GradeBreakdown(props){
 
     
     return (
-        <div>
-            <p>{props.name}</p>
-            <p>{props.grade}</p>
-            <p>{props.weight}</p>
-            <p>{props.gradeContribution}</p>
+        <div id='breakDownRow'>
+            <p id= 'breakDownName'>{props.name}:</p>
+            <p id= 'breakDownGrade'>{props.grade}%</p>
+            <p>*</p> 
+            <p id= 'breakDownWeight'>{props.weight}%</p>
+            <p>=</p>
+            <p id= 'breakDownGradeContribution'>{props.gradeContribution}%</p>
         </div>
     );
    
